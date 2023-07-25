@@ -3,6 +3,7 @@ const express = require('express'); // importamos express
 const productsRouter = require('./products.router'); // importamos el router de products
 const categoriesRouter = require('./categories.router'); // importamos el router de categories
 const usersRouter = require('./users.router'); // importamos el router de users
+const pruebasRouter = require('./pruebas.router'); // importamos el router de pruebas
 
 function routerApi(app) {
   // versionado de la api
@@ -14,6 +15,7 @@ function routerApi(app) {
   router.use('/products', productsRouter); // le decimos a express que use el router de products
   router.use('/categories', categoriesRouter); // le decimos a express que use el router de categories
   router.use('/users', usersRouter); // le decimos a express que use el router de users
+  router.use('/pruebas', pruebasRouter); // le decimos a express que use el router de pruebas
 }
 
 module.exports = routerApi; // exportamos el router

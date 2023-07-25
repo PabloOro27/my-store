@@ -1,6 +1,6 @@
 const express = require('express'); // importa express
 const app = express(); // crea una instancia de express
-const port = 3005; // puerto por defecto
+const port = 3000; // puerto por defecto
 const routerApi = require('./routes'); // importamos el router de la api
 // middleware para parsear el body
 app.use(express.json());
