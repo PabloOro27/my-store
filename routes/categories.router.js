@@ -6,19 +6,23 @@ const CategorieService = require('../services/categories.service'); // importamo
 const service = new CategorieService(); // creamos una instancia del servicio de categorias
 
 // ruta categorias-- ------------------------------
-router.get('/', (req, res) => {
-  const categories = service.find(); // obtenemos los productos del servicio
+router.get('/', async(req, res) => {
+  const categories = await service.find(); // obtenemos los productos del servicio
     // respondemos con un json con los productos de la base de datos
     res.status(200).json(categories);
 });
 // ruta categorias con id---------------------------
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
-  const categories = service.findOne(id); // obtenemos la categoria del servicio
-  if(!categories) return res.status(404).json({ message: 'Category not found' });
-  else {
+router.get('/:id', async(req, res) => {
+  // comrpobamos su existe la categoria
+  try{
+    const { id } = req.params;
+    const categories = await service.findOne(id); // obtenemos la categoria del servicio
     // respondemos con un json con los productos de la base de datos
     res.status(200).json(categories);
+  }catch(error) {
+    res.status(404).json({
+      message: error.message
+    });
   }
 });
 // ruta categorias con id y productos con id---------------------------
@@ -30,10 +34,10 @@ router.get('/:category_id/products/:product_id', (req, res) => {
   });
 });
 // metodo post
-router.post('/', (req, res) => {
+router.post('/', async(req, res) => {
   const body = req.body;
   // ingresar categoria
-  const newCategory = service.create(body.name, body.description);
+  await service.create(body.name, body.description);
   // para enviarle un status al cliente se utiliza el metodo status
   res.status(201).json({
     message: 'Category created',
@@ -41,23 +45,25 @@ router.post('/', (req, res) => {
   });
 });
 // metodo patch o put
-router.patch('/:id', (req, res) => {
-  const { id } = req.params; // obtenemos el id de los parametros
-  const body = req.body; // obtenemos el body
-  // actualizamos la categoria
-  service.update(id, body);
-  // respondemos con un json con los productos de la base de datos
-  res.status(202).json({
-    message: 'Category updated',
-    data: body,
-    id,
-  });
+router.patch('/:id', async(req, res) => {
+  try{
+    const { id } = req.params; // obtenemos el id de los parametros
+    const body = req.body; // obtenemos el body
+    // actualizamos la categoria
+    const category = await service.update(id, body);
+    // respondemos con un json con los productos de la base de datos
+    res.status(202).json(category);
+  } catch(error) {
+    res.status(404).json({
+      message: error.message
+    });
+  }
 });
 // metodo delete
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async(req, res) => {
   const { id } = req.params;
   // eliminamos la categoria
-  service.delete(id);
+  await service.delete(id);
   res.json({
     message: 'Category deleted',
     id,

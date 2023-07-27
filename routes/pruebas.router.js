@@ -12,9 +12,17 @@ router.get('/', (req, res) => {
   // recorremos el array y le agregamos datos falsos al array products
   for (let i = 0; i < limit; i++) {
     itemPrueba.push({
-      name: faker.commerce.productName(),
-      price: parseInt(faker.commerce.price()),
-      image: faker.image.imageUrl(),
+      // city: faker.location.cityName(),
+      city: 'Retalhuleu',
+      // country: faker.location.country({ full: true }),
+      country: 'Guatemala',
+      superHost: faker.datatype.boolean(),
+      title: faker.lorem.sentence(),
+      rating: faker.datatype.number(5),
+      maxGuests: faker.datatype.number(10),
+      type: faker.lorem.word(),
+      beds: faker.datatype.number(10),
+      photo: faker.image.imageUrl(640, 480, 'city', true),
     });
   }
   res.json(itemPrueba); // genera un json con los productos de la base de datos

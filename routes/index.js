@@ -7,15 +7,15 @@ const pruebasRouter = require('./pruebas.router'); // importamos el router de pr
 
 function routerApi(app) {
   // versionado de la api
-  const router = express.Router(); // crea una instancia de express
-  app.use('/api/v1', router); // le decimos a express que use el router de la api
+  const routerV1 = express.Router(); // crea una instancia de express
+  app.use('/api/v1', routerV1); // le decimos a express que use el router de la api
 
   // se cambia a router
   // router.use('/products', productsRouter);
-  router.use('/products', productsRouter); // le decimos a express que use el router de products
-  router.use('/categories', categoriesRouter); // le decimos a express que use el router de categories
-  router.use('/users', usersRouter); // le decimos a express que use el router de users
-  router.use('/pruebas', pruebasRouter); // le decimos a express que use el router de pruebas
+  routerV1.use('/products', productsRouter); // le decimos a express que use el router de products
+  routerV1.use('/categories', categoriesRouter); // le decimos a express que use el router de categories
+  routerV1.use('/users', usersRouter); // le decimos a express que use el router de users
+  routerV1.use('/pruebas', pruebasRouter); // le decimos a express que use el router de pruebas
 }
 
 module.exports = routerApi; // exportamos el router
