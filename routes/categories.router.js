@@ -12,7 +12,7 @@ router.get('/', async(req, res) => {
     res.status(200).json(categories);
 });
 // ruta categorias con id---------------------------
-router.get('/:id', async(req, res) => {
+router.get('/:id', async(req, res, next) => {
   // comrpobamos su existe la categoria
   try{
     const { id } = req.params;
@@ -20,9 +20,7 @@ router.get('/:id', async(req, res) => {
     // respondemos con un json con los productos de la base de datos
     res.status(200).json(categories);
   }catch(error) {
-    res.status(404).json({
-      message: error.message
-    });
+    next(error); // llamamos al middleware de errores con el error
   }
 });
 // ruta categorias con id y productos con id---------------------------
@@ -45,7 +43,7 @@ router.post('/', async(req, res) => {
   });
 });
 // metodo patch o put
-router.patch('/:id', async(req, res) => {
+router.patch('/:id', async(req, res, next) => {
   try{
     const { id } = req.params; // obtenemos el id de los parametros
     const body = req.body; // obtenemos el body
@@ -54,9 +52,7 @@ router.patch('/:id', async(req, res) => {
     // respondemos con un json con los productos de la base de datos
     res.status(202).json(category);
   } catch(error) {
-    res.status(404).json({
-      message: error.message
-    });
+    next(error); // llamamos al middleware de errores con el error
   }
 });
 // metodo delete

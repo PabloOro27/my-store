@@ -2,6 +2,12 @@ const express = require('express'); // importa express
 const app = express(); // crea una instancia de express
 const port = 3000; // puerto por defecto
 const routerApi = require('./routes'); // importamos el router de la api
+// traemos el middleware de errores
+const {
+  logErrors,
+  errorHandler,
+  boomErrorHandler,
+} = require('./middlewares/error.handler');
 // middleware para parsear el body
 app.use(express.json());
 
@@ -16,7 +22,11 @@ app.get('/nueva-ruta', (req, res) => {
 // -----------------------------------------------
 // llamada de los routers
 routerApi(app); // le decimos a express que use el router de la api
-
+// ------------------------------------------------------------------------------------------------
+// llamado de middlewares de errores, siempre se hacen despues del routeing
+app.use(logErrors);
+app.use(boomErrorHandler);
+app.use(errorHandler);
 // -----------------------------------------------
 // escucha el puerto ymanda un mensaje por consola
 app.listen(port, () => {
