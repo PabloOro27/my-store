@@ -1,22 +1,35 @@
 const express = require('express'); // importa express
 const app = express(); // crea una instancia de express
-const port = 3000; // puerto por defecto
+const port = process.env.PORT || 3000; // puerto por defecto
 const routerApi = require('./routes'); // importamos el router de la api
-// traemos el middleware de errores
+const cors = require('cors'); // importamos cors
+// traemos el middleware de errores---------------------------
 const {
   logErrors,
   errorHandler,
   boomErrorHandler,
 } = require('./middlewares/error.handler');
-// middleware para parsear el body
+// middleware para parsear el body--------------------------------
 app.use(express.json());
+// usamos cors para que se pueda conectar a cualquier origen
+const whitelist = ['http://localhost:3000'];
+const options = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido, no esta autorizado'));
+    }
+  },
+};
+app.use(cors(options));
 
 // ruta por defecto--------------------------------
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Hola mi server en express');
 })
 // nueva ruta--------------------------------------
-app.get('/nueva-ruta', (req, res) => {
+app.get('/api/nueva-ruta', (req, res) => {
   res.send('Hola soy una nueva ruta');
 });
 // -----------------------------------------------
